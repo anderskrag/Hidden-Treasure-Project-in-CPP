@@ -1,0 +1,39 @@
+#pragma once
+#include "AnimationWindow.h"
+#include <filesystem>
+#include "fstream"
+#include "map"
+#include "string"
+
+
+void loadBoard(std::filesystem::path filename);
+
+const std::map<char, TDT4102::Color> charToColor {
+    {'E', TDT4102::Color::maroon},          //Empty
+    {'W', TDT4102::Color::purple},          //Wall
+    {'#', TDT4102::Color::saddle_brown},    //Rock  
+    {' ', TDT4102::Color::transparent},     //No rock
+    {'S', TDT4102::Color::deep_skyblue},    //Sky
+    {'B', TDT4102::Color::green},           //Health and money bar
+};
+
+class WorldTile {
+    public:
+        int pixels_width = 64;
+        int pixels_height = 64;
+        char tile_type;
+    
+    WorldTile() : tile_type(' ') {};
+    WorldTile(char tile_type) : tile_type(tile_type) {};
+};
+
+class GameWorld {
+    public:
+        std::vector<std::vector<WorldTile>> tile_vec;
+        int width;
+        int height;
+
+        GameWorld(std::filesystem::path filename);
+        // void getWorldFromFile(std::filesystem::path filename);
+};
+
