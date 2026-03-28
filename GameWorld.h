@@ -12,9 +12,10 @@ const std::map<char, TDT4102::Color> charToColor {
     {'E', TDT4102::Color::maroon},          //Empty
     {'W', TDT4102::Color::purple},          //Wall
     {'#', TDT4102::Color::saddle_brown},    //Rock  
-    {' ', TDT4102::Color::transparent},     //No rock
+    {' ', TDT4102::Color::black},     //No rock
     {'S', TDT4102::Color::deep_skyblue},    //Sky
     {'B', TDT4102::Color::green},           //Health and money bar
+    {'P', TDT4102::Color::dark_gray},
 };
 
 class WorldTile {
@@ -27,13 +28,22 @@ class WorldTile {
     WorldTile(char tile_type) : tile_type(tile_type) {};
 };
 
+class Player {
+    public:
+        int row_index;
+        int col_index;
+        bool facing_left;
+
+};
+
 class GameWorld {
     public:
         std::vector<std::vector<WorldTile>> tile_vec;
+        Player playerInWorld;
         int width;
         int height;
 
         GameWorld(std::filesystem::path filename);
-        // void getWorldFromFile(std::filesystem::path filename);
+
 };
 

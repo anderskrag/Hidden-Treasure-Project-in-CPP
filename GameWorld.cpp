@@ -18,12 +18,12 @@ GameWorld::GameWorld(std::filesystem::path filename){
     while(getline(is, line)){
         for(int i = 0; i < width; i++){
             tile_vec.at(line_count).at(i) = WorldTile(line.at(i));
+            if(tile_vec.at(line_count).at(i).tile_type == 'P'){
+                playerInWorld.row_index = line_count;
+                playerInWorld.col_index = i;
+                playerInWorld.facing_left = false;
+            }
         }
         line_count++;
     }
-
 }
-
-// GameWorld::GameWorld(int init_height, int width){
-//     tile_vec.resize(init_height, std::vector<WorldTile>(width));
-// }
