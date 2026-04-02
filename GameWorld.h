@@ -41,6 +41,7 @@ class GameWorld {
         int width;
         int init_height;
         int sky_height;
+        std::vector<WorldTile> default_world_line;
         GameWorld(std::filesystem::path filename);
 };
 

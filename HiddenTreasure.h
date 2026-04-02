@@ -8,7 +8,6 @@ class HiddenTreasure{
     GameWindow window;
     PlayerRules player_rules;
     PlayerActions player_actions;
-    std::vector<WorldTile> default_world_line;
 
     int top_left_x = 100;
     int top_left_y = 50;

@@ -3,9 +3,7 @@
 #include <filesystem>
 
 HiddenTreasure::HiddenTreasure(std::filesystem::path filename)
-: world(filename), window(top_left_x, top_left_y, world.width*64, world.init_height*64, "My Game") {
-    default_world_line = world.tile_vec.at(world.sky_height); // sky_height peker på linja etter siste himmel-linje
-};
+: world(filename), window(top_left_x, top_left_y, world.width*64, world.init_height*64, "My Game") {};
 
 
 void HiddenTreasure::handle_input()
@@ -72,7 +70,7 @@ void HiddenTreasure::handle_input()
 }
 
 void HiddenTreasure::add_new_line(){
-    std::vector<WorldTile> temp_line = default_world_line;
+    std::vector<WorldTile> temp_line = world.default_world_line;
     world.tile_vec.push_back(temp_line);
 }
 

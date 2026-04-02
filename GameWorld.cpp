@@ -26,6 +26,7 @@ GameWorld::GameWorld(std::filesystem::path filename){
         }
         line_count++;
     }
+    std::vector<WorldTile> default_world_line = tile_vec.at(sky_height);
 }
 
 bool PlayerRules::canMoveLeft(GameWorld& world){
