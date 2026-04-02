@@ -1,8 +1,11 @@
-7 17 
-BBBBBBBBBBBBBBBBB
+10 17 2
+SSSSSSSSSSSSSSSSS
 SSSSSSSSPSSSSSSSS
-EEEEW#######WEEEE
-EEEEW#######WEEEE
-EEEEW#######WEEEE
-EEEEW#######WEEEE
-EEEEW#######WEEEE
+EW#############WE
+EW#############WE
+EW#############WE
+EW#############WE
+EW#############WE
+EW#############WE
+EW#############WE
+EW#############WE

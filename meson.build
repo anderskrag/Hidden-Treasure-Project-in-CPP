@@ -16,7 +16,6 @@ src = [
 'HiddenTreasure.cpp',
 'main.cpp',
 'Stopwatch.cpp',
-'testing_stuff.cpp',
 'TreasureWindow.cpp'
 ]
 

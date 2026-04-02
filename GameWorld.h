@@ -20,8 +20,6 @@ const std::map<char, TDT4102::Color> charToColor {
 
 class WorldTile {
     public:
-        int pixels_width = 64;
-        int pixels_height = 64;
         char tile_type;
     
     WorldTile() : tile_type(' ') {};
@@ -41,9 +39,27 @@ class GameWorld {
         std::vector<std::vector<WorldTile>> tile_vec;
         Player playerInWorld;
         int width;
-        int height;
-
+        int init_height;
+        int sky_height;
         GameWorld(std::filesystem::path filename);
-
 };
 
+class PlayerRules {
+    public:
+        bool canMoveLeft(GameWorld& world);
+        bool canMoveRight(GameWorld& world);
+        bool canDigLeft(GameWorld& world);
+        bool canDigRight(GameWorld& world);
+        bool canDigDownLeft(GameWorld& world);
+        bool canDigDownRight(GameWorld& world);
+};
+
+class PlayerActions {
+    public:
+        void moveLeft(GameWorld& world);
+        void moveRight(GameWorld& world);
+        void digLeft(GameWorld& world);
+        void digRight(GameWorld& world);
+        void digDownLeft(GameWorld& world);
+        void digDownRight(GameWorld& world);
+};
