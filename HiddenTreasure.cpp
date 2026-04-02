@@ -70,7 +70,8 @@ void HiddenTreasure::handle_input()
 }
 
 void HiddenTreasure::add_new_line(){
-    std::vector<WorldTile> temp_line = world.default_world_line;
+    std::vector<WorldTile> temp_line;
+    temp_line = world.default_world_line;
     world.tile_vec.push_back(temp_line);
 }
 
