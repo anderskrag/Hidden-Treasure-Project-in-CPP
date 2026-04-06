@@ -1,9 +1,12 @@
 #include "HiddenTreasure.h"
 #include <iostream>
 #include <filesystem>
+#include "Stopwatch.h"
+#include "time.h"   
 
 HiddenTreasure::HiddenTreasure(std::filesystem::path filename)
-: world(filename), window(top_left_x, top_left_y, world.width*64, world.init_height*64, "My Game") {};
+: world(filename),
+ window(top_left_x, top_left_y, world.width*64, world.init_height*64, "My Game") {};
 
 
 void HiddenTreasure::handle_input()
@@ -85,16 +88,31 @@ void HiddenTreasure::handle_gravity()
         window.first_tile_line_index++;
         add_new_line();
     }
+}
 
+void HiddenTreasure::handle_time(){
+    if(time(0) - start_time > 1){
+            start_time++;
+            world.playerInWorld.health--;
+        }
 }
 
 void HiddenTreasure::run()
 {
+    start_time = time(0);
+
     while (!window.should_close())
-    {
-        window.draw_world(this->world, this->world.playerInWorld);
-        handle_input();
-        handle_gravity();
-        window.next_frame();
+    {   
+        handle_time();
+
+        if(world.playerInWorld.health > 0){
+            window.draw_world(this->world, this->world.playerInWorld);
+            handle_input();
+            handle_gravity();
+            window.next_frame();
+        }
+        else{
+            std::cout << "You lost!" << std::endl;
+        }
     }
 }

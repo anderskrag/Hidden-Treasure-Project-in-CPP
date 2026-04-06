@@ -5,9 +5,6 @@
 #include "map"
 #include "string"
 
-
-void loadBoard(std::filesystem::path filename);
-
 const std::map<char, TDT4102::Color> charToColor {
     {'E', TDT4102::Color::maroon},          //Empty
     {'W', TDT4102::Color::purple},          //Wall
@@ -31,6 +28,8 @@ class Player {
         int row_index;
         int col_index;
         bool facing_left;
+        int health = 100;
+        TDT4102::Point health_topleft = {static_cast<int>(0.2*64), static_cast<int>(0.2*64)};
 
 };
 
