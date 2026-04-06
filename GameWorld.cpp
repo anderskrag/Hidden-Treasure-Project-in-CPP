@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 
-GameWorld::GameWorld(std::filesystem::path filename) : heart_chance(0.05) {
+GameWorld::GameWorld(std::filesystem::path filename) {
     std::ifstream is{filename};
 
     if(!is){
@@ -39,8 +39,11 @@ GameWorld::GameWorld(std::filesystem::path filename) : heart_chance(0.05) {
 
             if(res < heart_chance){
                 tile_vec.at(i).at(j).tile_type = ' ';
-
                 hearts_vec.push_back(Heart(i, j));
+            }
+            else if(res < heart_chance + gold_chance){
+                tile_vec.at(i).at(j).tile_type = ' ';
+                gold_vec.push_back(Gold(i, j));
             }
         }
     }
@@ -180,6 +183,24 @@ void PlayerActions::heartCollision(GameWorld& world){
     for(int i = 0; i < world.hearts_vec.size(); i++){
         if(world.playerInWorld.row_index == world.hearts_vec.at(i).row_index && world.playerInWorld.col_index == world.hearts_vec.at(i).col_index){
             world.hearts_vec.erase(world.hearts_vec.begin() + i);
+        }
+    }
+}
+
+bool PlayerRules::goldCollisionCheck(GameWorld& world){
+    for(Gold gold : world.gold_vec){
+        if(world.playerInWorld.row_index == gold.row_index && world.playerInWorld.col_index == gold.col_index){
+            return true;
+        }
+    }
+    return false;
+}
+
+void PlayerActions::goldCollision(GameWorld& world){
+    world.playerInWorld.money += 100;
+    for(int i = 0; i < world.gold_vec.size(); i++){
+        if(world.playerInWorld.row_index == world.gold_vec.at(i).row_index && world.playerInWorld.col_index == world.gold_vec.at(i).col_index){
+            world.gold_vec.erase(world.gold_vec.begin() + i);
         }
     }
 }

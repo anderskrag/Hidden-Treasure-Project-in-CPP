@@ -29,7 +29,7 @@ class Player {
         int col_index;
         bool facing_left;
         int health = 100;
-        TDT4102::Point health_topleft = {static_cast<int>(0.2*64), static_cast<int>(0.2*64)};
+        int money = 0;
 };
 
 class Heart {
@@ -38,6 +38,14 @@ class Heart {
         int col_index;
 
         Heart(int row_index, int col_index) : row_index(row_index), col_index(col_index){};
+};
+
+class Gold {
+    public:
+        int row_index;
+        int col_index;
+
+        Gold(int row_index, int col_index) : row_index(row_index), col_index(col_index){};
 };
 
 class GameWorld {
@@ -49,8 +57,10 @@ class GameWorld {
         int height;
         int sky_height;
 
-        double heart_chance;
+        double heart_chance{0.05};
+        double gold_chance{0.03};
         
+        std::vector<Gold> gold_vec;
         std::vector<Heart> hearts_vec;
         std::vector<WorldTile> default_world_line;
         GameWorld(std::filesystem::path filename);
@@ -66,6 +76,7 @@ class PlayerRules {
         bool canDigDownRight(GameWorld& world);
 
         bool heartCollisionCheck(GameWorld& world);
+        bool goldCollisionCheck(GameWorld& world);
 };
 
 class PlayerActions {
@@ -77,4 +88,5 @@ class PlayerActions {
         void digDownLeft(GameWorld& world);
         void digDownRight(GameWorld& world);
         void heartCollision(GameWorld& world);
+        void goldCollision(GameWorld& world);
     };

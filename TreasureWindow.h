@@ -11,9 +11,12 @@ class GameWindow : public TDT4102::AnimationWindow {
 
     public:
         int first_tile_line_index = 0;
+        TDT4102::Point health_topleft = {static_cast<int>(0.2*64), static_cast<int>(0.2*64)};
 
         GameWindow(int x = 50, int y = 50, int width = 1024, int height = 768, const std::string& title = "Animation Window")
          : AnimationWindow(x, y, width, height, title){};
+        void draw_gold(GameWorld& world);
+        void draw_money(Player& player);
         void draw_health(Player& player);
         void draw_hearts(GameWorld& world);
         void draw_player(Player& player);

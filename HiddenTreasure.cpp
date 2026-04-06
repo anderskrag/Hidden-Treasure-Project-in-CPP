@@ -75,6 +75,9 @@ void HiddenTreasure::handle_input()
     if(player_rules.heartCollisionCheck(this->world)){
         player_actions.heartCollision(this->world);
     }
+    if(player_rules.goldCollisionCheck(this->world)){
+        player_actions.goldCollision(this->world);
+    }
 }
 
 void HiddenTreasure::add_new_line(){
@@ -90,6 +93,10 @@ void HiddenTreasure::add_new_line(){
         if(res < world.heart_chance){
             temp_line.at(i).tile_type = ' ';
             world.hearts_vec.push_back(Heart(world.height - 1, i));
+        }
+        else if(res < world.heart_chance + world.gold_chance){
+            temp_line.at(i).tile_type = ' ';
+            world.gold_vec.push_back(Gold(world.height - 1, i));
         }
 
     }
