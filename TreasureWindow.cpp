@@ -8,8 +8,12 @@ void GameWindow::draw_health(Player& player){
     for(int i = 0; i < player.health; i++){
         draw_rectangle({player.health_topleft.x + i + 5, player.health_topleft.y + 5}, 1, bar_height - 10, TDT4102::Color::red);
     }
+}
 
-
+void GameWindow::draw_hearts(GameWorld& world){
+    for(Heart heart : world.hearts_vec){
+        draw_rectangle({heart.col_index * tile_width + 20, (heart.row_index - first_tile_line_index) * tile_height + 20}, 20, 20, TDT4102::Color::red);
+    }
 }
 
 void GameWindow::draw_player(Player& player){
@@ -29,5 +33,6 @@ void GameWindow::draw_world(GameWorld& world, Player& player){
                 draw_rectangle({j*tile_width, (i-first_tile_line_index)*tile_height}, tile_width, tile_height, charToColor.at(world.tile_vec.at(i).at(j).tile_type));
         }
     }
+    draw_hearts(world);
     draw_player(player);
 }

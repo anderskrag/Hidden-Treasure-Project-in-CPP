@@ -30,7 +30,14 @@ class Player {
         bool facing_left;
         int health = 100;
         TDT4102::Point health_topleft = {static_cast<int>(0.2*64), static_cast<int>(0.2*64)};
+};
 
+class Heart {
+    public:
+        int row_index;
+        int col_index;
+
+        Heart(int row_index, int col_index) : row_index(row_index), col_index(col_index){};
 };
 
 class GameWorld {
@@ -39,7 +46,12 @@ class GameWorld {
         Player playerInWorld;
         int width;
         int init_height;
+        int height;
         int sky_height;
+
+        double heart_chance;
+        
+        std::vector<Heart> hearts_vec;
         std::vector<WorldTile> default_world_line;
         GameWorld(std::filesystem::path filename);
 };
@@ -52,6 +64,8 @@ class PlayerRules {
         bool canDigRight(GameWorld& world);
         bool canDigDownLeft(GameWorld& world);
         bool canDigDownRight(GameWorld& world);
+
+        bool heartCollisionCheck(GameWorld& world);
 };
 
 class PlayerActions {
@@ -62,4 +76,5 @@ class PlayerActions {
         void digRight(GameWorld& world);
         void digDownLeft(GameWorld& world);
         void digDownRight(GameWorld& world);
-};
+        void heartCollision(GameWorld& world);
+    };

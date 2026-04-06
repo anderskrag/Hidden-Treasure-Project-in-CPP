@@ -15,6 +15,7 @@ class GameWindow : public TDT4102::AnimationWindow {
         GameWindow(int x = 50, int y = 50, int width = 1024, int height = 768, const std::string& title = "Animation Window")
          : AnimationWindow(x, y, width, height, title){};
         void draw_health(Player& player);
+        void draw_hearts(GameWorld& world);
         void draw_player(Player& player);
         void draw_world(GameWorld& world, Player& player);
 };

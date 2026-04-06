@@ -2,7 +2,8 @@
 #include <iostream>
 #include <filesystem>
 #include "Stopwatch.h"
-#include "time.h"   
+#include "time.h" 
+#include <random>  
 
 HiddenTreasure::HiddenTreasure(std::filesystem::path filename)
 : world(filename),
@@ -70,11 +71,28 @@ void HiddenTreasure::handle_input()
             player_actions.digDownRight(this->world);
         }
     }
+
+    if(player_rules.heartCollisionCheck(this->world)){
+        player_actions.heartCollision(this->world);
+    }
 }
 
 void HiddenTreasure::add_new_line(){
+    world.height++;
+
     std::vector<WorldTile> temp_line;
     temp_line = world.default_world_line;
+    for(int i = 2; i < world.width - 2; i++){
+        std::random_device my_rd;
+        std::default_random_engine generator(my_rd());
+        std::uniform_real_distribution<double> dist(0, 1);
+        double res = dist(generator);
+        if(res < world.heart_chance){
+            temp_line.at(i).tile_type = ' ';
+            world.hearts_vec.push_back(Heart(world.height - 1, i));
+        }
+
+    }
     world.tile_vec.push_back(temp_line);
 }
 
