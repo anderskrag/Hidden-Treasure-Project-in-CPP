@@ -66,3 +66,10 @@ void GameWindow::draw_world(GameWorld& world, Player& player){
     draw_hearts(world);
     draw_player(player);
 }
+
+void GameWindow::draw_game_over(GameWorld& world){
+    draw_text({128, 128}, "Game over!", TDT4102::Color::lime_green, 60, TDT4102::Font::times);
+    std::string lvl_string = "You reached lvl: ";
+    lvl_string += std::to_string(world.playerInWorld.lvl);
+    draw_text({128, 128 + 70}, lvl_string, TDT4102::Color::lime_green);
+}

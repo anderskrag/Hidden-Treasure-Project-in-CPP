@@ -19,7 +19,7 @@ class HiddenTreasure{
     bool LEFT_already_down = false;
     bool RIGHT_already_down = false;
     
-    bool loss_printed = false;
+    bool game_live = true;
 
     public:
         HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);

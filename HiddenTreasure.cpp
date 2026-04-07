@@ -138,7 +138,7 @@ void HiddenTreasure::new_lvl(){
 
             window.first_tile_line_index = 0;
 
-            world = GameWorld("init_world.txt", world.lack_of_air + 2, world.heart_chance - 0.001, world.gold_chance, world.playerInWorld.lvl + 1);
+            world = GameWorld("init_world.txt", world.lack_of_air, world.heart_chance - 0.002, world.gold_chance, world.playerInWorld.lvl + 1);
 
     }
 }
@@ -151,18 +151,19 @@ void HiddenTreasure::run()
     {   
         
 
-        if(world.playerInWorld.health > 0){
+        if(game_live){
             handle_time();
             handle_input();
             handle_gravity();
-            
-        }
-        else if (!loss_printed){
-            std::cout << "You lost! " << "You reached lvl: " << world.playerInWorld.lvl << std::endl;
-            loss_printed = true;
+            if(world.playerInWorld.health <= 0){
+                game_live = false;
+            }
         }
 
         window.draw_world(this->world, this->world.playerInWorld);
+        if(!game_live){
+            window.draw_game_over(this->world);
+        }
         window.next_frame();
         new_lvl();
         
