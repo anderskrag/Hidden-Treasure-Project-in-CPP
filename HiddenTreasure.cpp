@@ -130,16 +130,22 @@ void HiddenTreasure::handle_time(){
 
 void HiddenTreasure::new_lvl(){
     if(world.playerInWorld.money >= world.playerInWorld.lvl * 100){
-            world.default_world_line.clear();
-            world.gold_vec.clear();
-            world.hearts_vec.clear();
-            world.tile_vec.clear();
-            world.fire_vec.clear();
+            world.clearWorld();
 
             window.first_tile_line_index = 0;
 
             world = GameWorld("init_world.txt", world.lack_of_air, world.heart_chance - 0.002, world.gold_chance, world.playerInWorld.lvl + 1);
 
+    }
+}
+
+void HiddenTreasure::handle_menu(){
+    if(window.is_key_down(KeyboardKey::SPACE)){
+        game_live = true;
+        world.clearWorld();
+        window.first_tile_line_index = 0;
+        world = GameWorld("init_world.txt", 1, 0.05, 0.03, 1);
+        start_time = time(0);
     }
 }
 
@@ -149,7 +155,7 @@ void HiddenTreasure::run()
 
     while (!window.should_close())
     {   
-        
+        new_lvl();
 
         if(game_live){
             handle_time();
@@ -163,9 +169,9 @@ void HiddenTreasure::run()
         window.draw_world(this->world, this->world.playerInWorld);
         if(!game_live){
             window.draw_game_over(this->world);
+            handle_menu();
         }
+
         window.next_frame();
-        new_lvl();
-        
     }
 }

@@ -27,6 +27,7 @@ class HiddenTreasure{
         void handle_time();
         void handle_input();
         void handle_gravity();
+        void handle_menu();
 
         void new_lvl();
         void add_new_line();

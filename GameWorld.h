@@ -81,7 +81,7 @@ class GameWorld {
         std::vector<WorldTile> default_world_line;
         GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);
 
-        // GameWorld operator=(GameWorld rhs);
+        void clearWorld();
 };
 
 class PlayerRules {

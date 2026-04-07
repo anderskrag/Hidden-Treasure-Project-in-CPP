@@ -72,4 +72,5 @@ void GameWindow::draw_game_over(GameWorld& world){
     std::string lvl_string = "You reached lvl: ";
     lvl_string += std::to_string(world.playerInWorld.lvl);
     draw_text({128, 128 + 70}, lvl_string, TDT4102::Color::lime_green);
+    draw_text({128, 64*(world.init_height-1)}, "(Press SPACE for new game...)", TDT4102::Color::lime_green);
 }

@@ -53,6 +53,14 @@ GameWorld::GameWorld(std::filesystem::path filename, int lack_of_air, double hea
     }
 }
 
+void GameWorld::clearWorld(){
+    default_world_line.clear();
+    gold_vec.clear();
+    hearts_vec.clear();
+    tile_vec.clear();
+    fire_vec.clear();
+}
+
 bool PlayerRules::canMoveLeft(GameWorld& world){
     if((world.tile_vec.at(world.playerInWorld.row_index).at(world.playerInWorld.col_index - 1).tile_type == ' '
     || world.tile_vec.at(world.playerInWorld.row_index).at(world.playerInWorld.col_index - 1).tile_type == 'S')
