@@ -21,5 +21,6 @@ class GameWindow : public TDT4102::AnimationWindow {
         void draw_lvl(Player& player);
         void draw_hearts(GameWorld& world);
         void draw_player(Player& player);
+        void draw_fire(GameWorld& world);
         void draw_world(GameWorld& world, Player& player);
 };

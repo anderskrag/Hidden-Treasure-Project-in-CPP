@@ -53,6 +53,13 @@ class Gold {
         Gold(int row_index, int col_index) : row_index(row_index), col_index(col_index){};
 };
 
+class Fire {
+    public:
+        int row_index;
+        int col_index;
+        Fire(int row_index, int col_index) : row_index(row_index), col_index(col_index){};
+};
+
 class GameWorld {
     public:
         std::vector<std::vector<WorldTile>> tile_vec;
@@ -65,9 +72,12 @@ class GameWorld {
         int lack_of_air;
         double heart_chance;
         double gold_chance;
+        double fire_chance{0.20};
         
         std::vector<Gold> gold_vec;
         std::vector<Heart> hearts_vec;
+        std::vector<Fire> fire_vec;
+
         std::vector<WorldTile> default_world_line;
         GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);
 
@@ -85,6 +95,7 @@ class PlayerRules {
 
         bool heartCollisionCheck(GameWorld& world);
         bool goldCollisionCheck(GameWorld& world);
+        bool fireCollisionCheck(GameWorld& world);
 };
 
 class PlayerActions {
@@ -97,4 +108,5 @@ class PlayerActions {
         void digDownRight(GameWorld& world);
         void heartCollision(GameWorld& world);
         void goldCollision(GameWorld& world);
+        void fireCollision(GameWorld& world);
     };

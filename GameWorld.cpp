@@ -46,21 +46,12 @@ GameWorld::GameWorld(std::filesystem::path filename, int lack_of_air, double hea
                 tile_vec.at(i).at(j).tile_type = ' ';
                 gold_vec.push_back(Gold(i, j));
             }
+            else if(res < heart_chance + gold_chance + fire_chance){
+                fire_vec.push_back(Fire(i, j));
+            }
         }
     }
 }
-
-// GameWorld GameWorld::operator=(GameWorld rhs){
-//     tile_vec = rhs.tile_vec;
-//     playerInWorld.col_index = rhs.playerInWorld.col_index;
-//     playerInWorld.row_index = rhs.playerInWorld.row_index;
-//     playerInWorld.facing_left = rhs.playerInWorld.facing_left;
-//     playerInWorld.money = rhs.playerInWorld.money;
-//     playerInWorld.health = rhs.playerInWorld.health;
-//     width = rhs.width;
-//     gold_vec = rhs.gold_vec;
-//     hearts_vec = rhs.hearts_vec;
-// }
 
 bool PlayerRules::canMoveLeft(GameWorld& world){
     if((world.tile_vec.at(world.playerInWorld.row_index).at(world.playerInWorld.col_index - 1).tile_type == ' '
@@ -214,6 +205,24 @@ void PlayerActions::goldCollision(GameWorld& world){
     for(int i = 0; i < world.gold_vec.size(); i++){
         if(world.playerInWorld.row_index == world.gold_vec.at(i).row_index && world.playerInWorld.col_index == world.gold_vec.at(i).col_index){
             world.gold_vec.erase(world.gold_vec.begin() + i);
+        }
+    }
+}
+
+bool PlayerRules::fireCollisionCheck(GameWorld& world){
+    for(Fire fire : world.fire_vec){
+        if(fire.row_index == world.playerInWorld.row_index && fire.col_index==world.playerInWorld.col_index){
+            return true;
+        }
+    }
+    return false;
+}
+
+void PlayerActions::fireCollision(GameWorld& world){
+    world.playerInWorld.health -= 10;
+    for(int i = 0; i < world.fire_vec.size(); i++){
+        if(world.playerInWorld.row_index == world.fire_vec.at(i).row_index && world.playerInWorld.col_index == world.fire_vec.at(i).col_index){
+            world.fire_vec.erase(world.fire_vec.begin() + i);
         }
     }
 }

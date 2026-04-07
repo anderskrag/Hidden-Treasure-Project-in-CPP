@@ -78,6 +78,9 @@ void HiddenTreasure::handle_input()
     if(player_rules.goldCollisionCheck(this->world)){
         player_actions.goldCollision(this->world);
     }
+    if(player_rules.fireCollisionCheck(this->world)){
+        player_actions.fireCollision(this->world);
+    }
 }
 
 void HiddenTreasure::add_new_line(){
@@ -97,6 +100,9 @@ void HiddenTreasure::add_new_line(){
         else if(res < world.heart_chance + world.gold_chance){
             temp_line.at(i).tile_type = ' ';
             world.gold_vec.push_back(Gold(world.height - 1, i));
+        }
+        else if(res < world.heart_chance + world.gold_chance + world.fire_chance){
+            world.fire_vec.push_back(Fire(world.height - 1, i));
         }
 
     }
@@ -128,10 +134,11 @@ void HiddenTreasure::new_lvl(){
             world.gold_vec.clear();
             world.hearts_vec.clear();
             world.tile_vec.clear();
+            world.fire_vec.clear();
 
             window.first_tile_line_index = 0;
 
-            world = GameWorld("init_world.txt", world.lack_of_air + 2, world.heart_chance*0.8, world.gold_chance, world.playerInWorld.lvl + 1);
+            world = GameWorld("init_world.txt", world.lack_of_air + 2, world.heart_chance - 0.001, world.gold_chance, world.playerInWorld.lvl + 1);
 
     }
 }
@@ -151,7 +158,7 @@ void HiddenTreasure::run()
             
         }
         else if (!loss_printed){
-            std::cout << "You lost!" << std::endl;
+            std::cout << "You lost! " << "You reached lvl: " << world.playerInWorld.lvl << std::endl;
             loss_printed = true;
         }
 

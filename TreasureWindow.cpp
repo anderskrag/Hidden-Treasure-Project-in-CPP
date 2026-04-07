@@ -47,12 +47,21 @@ void GameWindow::draw_player(Player& player){
     draw_lvl(player);
 }
 
+void GameWindow::draw_fire(GameWorld& world){
+    for(int i = 0; i < world.fire_vec.size(); i++){
+        if(world.tile_vec.at(world.fire_vec.at(i).row_index).at(world.fire_vec.at(i).col_index).tile_type == ' '){
+            draw_rectangle({world.fire_vec.at(i).col_index * tile_width + 20, (world.fire_vec.at(i).row_index - first_tile_line_index)*tile_height + 20}, 20, 20, TDT4102::Color::yellow_green);
+        }
+    }
+}
+
 void GameWindow::draw_world(GameWorld& world, Player& player){
     for(int i = first_tile_line_index; i < first_tile_line_index + world.init_height; i++){
         for(int j = 0; j < world.width; j++){
                 draw_rectangle({j*tile_width, (i-first_tile_line_index)*tile_height}, tile_width, tile_height, charToColor.at(world.tile_vec.at(i).at(j).tile_type));
         }
     }
+    draw_fire(world);
     draw_gold(world);
     draw_hearts(world);
     draw_player(player);
