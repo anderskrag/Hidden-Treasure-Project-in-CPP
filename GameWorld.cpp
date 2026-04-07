@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 
-GameWorld::GameWorld(std::filesystem::path filename) {
+GameWorld::GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl) : lack_of_air(lack_of_air), heart_chance(heart_chance), gold_chance(gold_chance) {
     std::ifstream is{filename};
 
     if(!is){
@@ -20,6 +20,7 @@ GameWorld::GameWorld(std::filesystem::path filename) {
         for(int i = 0; i < width; i++){
             tile_vec.at(line_count).at(i) = WorldTile(line.at(i));
             if(tile_vec.at(line_count).at(i).tile_type == 'P'){
+                playerInWorld = Player(line_count, i, false, 100, 0, lvl);
                 playerInWorld.row_index = line_count;
                 playerInWorld.col_index = i;
                 playerInWorld.facing_left = false;
@@ -48,6 +49,18 @@ GameWorld::GameWorld(std::filesystem::path filename) {
         }
     }
 }
+
+// GameWorld GameWorld::operator=(GameWorld rhs){
+//     tile_vec = rhs.tile_vec;
+//     playerInWorld.col_index = rhs.playerInWorld.col_index;
+//     playerInWorld.row_index = rhs.playerInWorld.row_index;
+//     playerInWorld.facing_left = rhs.playerInWorld.facing_left;
+//     playerInWorld.money = rhs.playerInWorld.money;
+//     playerInWorld.health = rhs.playerInWorld.health;
+//     width = rhs.width;
+//     gold_vec = rhs.gold_vec;
+//     hearts_vec = rhs.hearts_vec;
+// }
 
 bool PlayerRules::canMoveLeft(GameWorld& world){
     if((world.tile_vec.at(world.playerInWorld.row_index).at(world.playerInWorld.col_index - 1).tile_type == ' '

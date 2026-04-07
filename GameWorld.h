@@ -30,6 +30,11 @@ class Player {
         bool facing_left;
         int health = 100;
         int money = 0;
+        unsigned int lvl = 1;
+
+        Player() : row_index(1), col_index(1), facing_left(false) {};
+        Player(int row_index, int col_index, bool facing_left, int health, int money, unsigned int lvl) 
+        : row_index(row_index), col_index(col_index), facing_left(facing_left), health(health), money(money), lvl(lvl) {};
 };
 
 class Heart {
@@ -57,13 +62,16 @@ class GameWorld {
         int height;
         int sky_height;
 
-        double heart_chance{0.05};
-        double gold_chance{0.03};
+        int lack_of_air;
+        double heart_chance;
+        double gold_chance;
         
         std::vector<Gold> gold_vec;
         std::vector<Heart> hearts_vec;
         std::vector<WorldTile> default_world_line;
-        GameWorld(std::filesystem::path filename);
+        GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);
+
+        // GameWorld operator=(GameWorld rhs);
 };
 
 class PlayerRules {

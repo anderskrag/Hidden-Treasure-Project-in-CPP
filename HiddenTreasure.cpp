@@ -5,8 +5,8 @@
 #include "time.h" 
 #include <random>  
 
-HiddenTreasure::HiddenTreasure(std::filesystem::path filename)
-: world(filename),
+HiddenTreasure::HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl)
+: world(filename, lack_of_air, heart_chance, gold_chance, lvl),
  window(top_left_x, top_left_y, world.width*64, world.init_height*64, "My Game") {};
 
 
@@ -118,8 +118,22 @@ void HiddenTreasure::handle_gravity()
 void HiddenTreasure::handle_time(){
     if(time(0) - start_time > 1){
             start_time++;
-            world.playerInWorld.health--;
+            world.playerInWorld.health -= world.lack_of_air;
         }
+}
+
+void HiddenTreasure::new_lvl(){
+    if(world.playerInWorld.money >= world.playerInWorld.lvl * 100){
+            world.default_world_line.clear();
+            world.gold_vec.clear();
+            world.hearts_vec.clear();
+            world.tile_vec.clear();
+
+            window.first_tile_line_index = 0;
+
+            world = GameWorld("init_world.txt", world.lack_of_air + 2, world.heart_chance*0.8, world.gold_chance, world.playerInWorld.lvl + 1);
+
+    }
 }
 
 void HiddenTreasure::run()
@@ -128,16 +142,22 @@ void HiddenTreasure::run()
 
     while (!window.should_close())
     {   
-        handle_time();
+        
 
         if(world.playerInWorld.health > 0){
-            window.draw_world(this->world, this->world.playerInWorld);
+            handle_time();
             handle_input();
             handle_gravity();
-            window.next_frame();
+            
         }
-        else{
+        else if (!loss_printed){
             std::cout << "You lost!" << std::endl;
+            loss_printed = true;
         }
+
+        window.draw_world(this->world, this->world.playerInWorld);
+        window.next_frame();
+        new_lvl();
+        
     }
 }

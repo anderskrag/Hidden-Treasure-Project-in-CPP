@@ -18,6 +18,7 @@ class GameWindow : public TDT4102::AnimationWindow {
         void draw_gold(GameWorld& world);
         void draw_money(Player& player);
         void draw_health(Player& player);
+        void draw_lvl(Player& player);
         void draw_hearts(GameWorld& world);
         void draw_player(Player& player);
         void draw_world(GameWorld& world, Player& player);

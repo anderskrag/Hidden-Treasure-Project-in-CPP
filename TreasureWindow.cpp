@@ -1,6 +1,12 @@
 #include "TreasureWindow.h"
 #include <iostream>
 
+void GameWindow::draw_lvl(Player& player){
+    std::string lvl_string = "lvl: ";
+    lvl_string += std::to_string(player.lvl);
+    draw_text({8*64, 18}, lvl_string);
+}
+
 void GameWindow::draw_gold(GameWorld& world){
     for(Gold gold : world.gold_vec){
         draw_rectangle({gold.col_index * tile_width + 20, (gold.row_index - first_tile_line_index) * tile_height + 20}, 20, 20, TDT4102::Color::gold);
@@ -38,6 +44,7 @@ void GameWindow::draw_player(Player& player){
     }
     draw_health(player);
     draw_money(player);
+    draw_lvl(player);
 }
 
 void GameWindow::draw_world(GameWorld& world, Player& player){

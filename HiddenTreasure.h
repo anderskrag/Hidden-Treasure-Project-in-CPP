@@ -18,15 +18,17 @@ class HiddenTreasure{
     bool UP_already_down = false;
     bool LEFT_already_down = false;
     bool RIGHT_already_down = false;
+    
+    bool loss_printed = false;
 
     public:
-        HiddenTreasure(std::filesystem::path filename);
+        HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);
 
         void handle_time();
         void handle_input();
         void handle_gravity();
 
-        
+        void new_lvl();
         void add_new_line();
         void run();
 };
