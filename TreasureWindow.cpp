@@ -52,7 +52,7 @@ void GameWindow::draw_player(Player& player){
 void GameWindow::draw_fire(GameWorld& world){
     for(int i = 0; i < world.fire_vec.size(); i++){
         if(world.tile_vec.at(world.fire_vec.at(i).row_index).at(world.fire_vec.at(i).col_index).tile_type == ' '){
-            draw_rectangle({world.fire_vec.at(i).col_index * tile_width + 20, (world.fire_vec.at(i).row_index - first_tile_line_index)*tile_height + 20}, 20, 20, TDT4102::Color::yellow_green);
+            draw_rectangle({world.fire_vec.at(i).col_index * tile_width + 20, (world.fire_vec.at(i).row_index - first_tile_line_index)*tile_height + 20}, 20, 20, TDT4102::Color::white);
         }
     }
 }
