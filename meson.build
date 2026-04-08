@@ -10,7 +10,7 @@ std_lib_facilities_dep = dependency('std_lib_facilities', fallback: ['std_lib_fa
 
 compiler_flags = ['-Wconversion', '-fdiagnostics-color=always', '-Werror=return-type', '-static']
 
-src = ['Controles.cpp', 'GameWorld.cpp', 'HiddenTreasure.cpp', 'main.cpp', 'TreasureWindow.cpp']
+src = ['GameWorld.cpp', 'HiddenTreasure.cpp', 'main.cpp', 'TreasureWindow.cpp']
 
 if host_machine.system() == 'windows'
   ld_flags = ['-static', '-lstdc++exp']

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 
-GameWorld::GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl) : lack_of_air(lack_of_air), heart_chance(heart_chance), gold_chance(gold_chance) {
+GameWorld::GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, double fire_chance, unsigned int lvl) : lack_of_air(lack_of_air), heart_chance(heart_chance), gold_chance(gold_chance), fire_chance(fire_chance) {
     std::ifstream is{filename};
 
     if(!is){

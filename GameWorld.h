@@ -72,14 +72,14 @@ class GameWorld {
         int lack_of_air;
         double heart_chance;
         double gold_chance;
-        double fire_chance{0.20};
+        double fire_chance;
         
         std::vector<Gold> gold_vec;
         std::vector<Heart> hearts_vec;
         std::vector<Fire> fire_vec;
 
         std::vector<WorldTile> default_world_line;
-        GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);
+        GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, double fire_chance, unsigned int lvl);
 
         void clearWorld();
 };

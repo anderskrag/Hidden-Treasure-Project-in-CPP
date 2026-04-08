@@ -25,4 +25,5 @@ class GameWindow : public TDT4102::AnimationWindow {
         void draw_world(GameWorld& world, Player& player);
 
         void draw_game_over(GameWorld& world);
+        void draw_highscore(std::filesystem::path filename="highscore.txt");
 };

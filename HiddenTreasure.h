@@ -20,15 +20,17 @@ class HiddenTreasure{
     bool RIGHT_already_down = false;
     
     bool game_live = true;
+    bool score_written = false;
 
     public:
-        HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl);
+        HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, double fire_chance, unsigned int lvl);
 
         void handle_time();
         void handle_input();
         void handle_gravity();
         void handle_menu();
 
+        void write_score_to_file(std::filesystem::path filename);
         void new_lvl();
         void add_new_line();
         void run();

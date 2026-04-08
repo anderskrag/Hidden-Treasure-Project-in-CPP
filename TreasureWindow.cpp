@@ -1,5 +1,7 @@
 #include "TreasureWindow.h"
 #include <iostream>
+#include <fstream>
+#include <filesystem>
 
 void GameWindow::draw_lvl(Player& player){
     std::string lvl_string = "lvl: ";
@@ -67,10 +69,31 @@ void GameWindow::draw_world(GameWorld& world, Player& player){
     draw_player(player);
 }
 
+void GameWindow::draw_highscore(std::filesystem::path filename){
+    draw_text({128, 128 + 70 + 70}, "Highscore table", TDT4102::Color::lime_green, 40);
+    
+    std::ifstream is{filename};
+    int rank;
+    std::string lvl_string;
+    int lvl_from_file;
+    std::string white;
+    std::string highscore_text;
+    int y_pixels = 128 + 70 + 70 + 40;
+    int line_count = 1;
+    while(is >> rank >> lvl_string >> lvl_from_file && line_count <= 10){
+        getline(is, white);
+        highscore_text = "Rank: " + std::to_string(rank) + " | Level: " + std::to_string(lvl_from_file);
+        draw_text({128, y_pixels}, highscore_text, TDT4102::Color::lime_green);
+        y_pixels += 20;
+        line_count++;
+    }
+}
+
 void GameWindow::draw_game_over(GameWorld& world){
     draw_text({128, 128}, "Game over!", TDT4102::Color::lime_green, 60, TDT4102::Font::times);
     std::string lvl_string = "You reached lvl: ";
     lvl_string += std::to_string(world.playerInWorld.lvl);
     draw_text({128, 128 + 70}, lvl_string, TDT4102::Color::lime_green);
     draw_text({128, 64*(world.init_height-1)}, "(Press SPACE for new game...)", TDT4102::Color::lime_green);
+    draw_highscore();
 }

@@ -1,11 +1,11 @@
 #include "HiddenTreasure.h"
-#include <iostream>
+#include <fstream>
 #include <filesystem>
 #include "time.h" 
 #include <random>  
 
-HiddenTreasure::HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, unsigned int lvl)
-: world(filename, lack_of_air, heart_chance, gold_chance, lvl),
+HiddenTreasure::HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, double fire_chance, unsigned int lvl)
+: world(filename, lack_of_air, heart_chance, gold_chance, fire_chance, lvl),
  window(top_left_x, top_left_y, world.width*64, world.init_height*64, "My Game") {};
 
 
@@ -133,7 +133,7 @@ void HiddenTreasure::new_lvl(){
 
             window.first_tile_line_index = 0;
 
-            world = GameWorld("init_world.txt", world.lack_of_air, world.heart_chance - 0.002, world.gold_chance, world.playerInWorld.lvl + 1);
+            world = GameWorld("init_world.txt", world.lack_of_air, world.heart_chance*0.9, world.gold_chance, world.fire_chance, world.playerInWorld.lvl + 1);
 
     }
 }
@@ -143,9 +143,50 @@ void HiddenTreasure::handle_menu(){
         game_live = true;
         world.clearWorld();
         window.first_tile_line_index = 0;
-        world = GameWorld("init_world.txt", 1, 0.05, 0.03, 1);
+        world = GameWorld("init_world.txt", world.lack_of_air, 0.05, world.fire_chance, world.gold_chance, 1);
         start_time = time(0);
     }
+}
+
+void HiddenTreasure::write_score_to_file(std::filesystem::path filename){
+    if(!score_written){
+        std::ifstream is{filename};
+        std::ofstream os_temp{"temp.txt"};
+        std::string temp_line;
+        while(getline(is, temp_line)){
+            os_temp << temp_line << std::endl;
+        }
+        std::ofstream os{filename};
+        std::ifstream is_temp{"temp.txt"};
+        int place;
+        std::string lvl_string;
+        int lvl_on_line;
+        std::string whitespace;
+
+        bool line_added = false;
+        while(is_temp >> place >> lvl_string >> lvl_on_line){
+            // is_temp >> place >> lvl_string >> lvl_on_line;
+            getline(is_temp, whitespace); // fjerner /n
+
+            if(lvl_on_line >= world.playerInWorld.lvl){
+                os << place << " " << lvl_string << " " << lvl_on_line << std::endl;
+            }
+            else if(lvl_on_line < world.playerInWorld.lvl && !line_added){
+                os << place << " " << lvl_string << " " << world.playerInWorld.lvl << std::endl;
+                os << place + 1 << " " << lvl_string << " " << lvl_on_line << std::endl;
+                line_added = true;
+            }
+            else{
+                os << place + 1 << " " << lvl_string << " " << lvl_on_line << std::endl;
+            }
+            
+        }
+
+        if(!line_added){
+            os << place + 1 << " " << lvl_string << " " << world.playerInWorld.lvl << std::endl;
+        }
+    }
+    score_written = true;
 }
 
 void HiddenTreasure::run()
@@ -157,6 +198,8 @@ void HiddenTreasure::run()
         new_lvl();
 
         if(game_live){
+            score_written = false;
+
             handle_time();
             handle_input();
             handle_gravity();
@@ -167,6 +210,7 @@ void HiddenTreasure::run()
 
         window.draw_world(this->world, this->world.playerInWorld);
         if(!game_live){
+            write_score_to_file("highscore.txt");
             window.draw_game_over(this->world);
             handle_menu();
         }
