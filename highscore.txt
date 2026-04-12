@@ -6,12 +6,13 @@
 6 lvl 8
 7 lvl 8
 8 lvl 8
-9 lvl 6
+9 lvl 8
 10 lvl 6
 11 lvl 6
 12 lvl 6
-13 lvl 5
+13 lvl 6
 14 lvl 5
 15 lvl 5
-16 lvl 1
+16 lvl 5
 17 lvl 1
+18 lvl 1
