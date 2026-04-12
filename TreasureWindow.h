@@ -7,7 +7,13 @@ class GameWindow : public TDT4102::AnimationWindow {
         int tile_width = 64;
         int tile_height = 64;
         int player_eye_distance_from_front = tile_width*0.2;
-        int player_eye_distance_from_top = tile_height*0.3;     
+        int player_eye_distance_from_top = tile_height*0.3;
+
+        TDT4102::Image heart_pic{"heart.png"};
+        TDT4102::Image fire_pic{"fire.png"};
+        TDT4102::Image gold_pic{"gold.png"};
+        TDT4102::Image player_left_pic{"player_left.png"};
+        TDT4102::Image player_right_pic{"player_right.png"};
 
     public:
         int first_tile_line_index = 0;

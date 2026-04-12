@@ -11,7 +11,8 @@ void GameWindow::draw_lvl(Player& player){
 
 void GameWindow::draw_gold(GameWorld& world){
     for(Gold gold : world.gold_vec){
-        draw_rectangle({gold.col_index * tile_width + 20, (gold.row_index - first_tile_line_index) * tile_height + 20}, 20, 20, TDT4102::Color::gold);
+        // draw_rectangle({gold.col_index * tile_width + 20, (gold.row_index - first_tile_line_index) * tile_height + 20}, 20, 20, TDT4102::Color::gold);
+        draw_image({gold.col_index * tile_width +4, (gold.row_index - first_tile_line_index) * tile_height + 23}, this->gold_pic, 60, 50);
     }
 }
 
@@ -32,7 +33,8 @@ void GameWindow::draw_health(Player& player){
 
 void GameWindow::draw_hearts(GameWorld& world){
     for(Heart heart : world.hearts_vec){
-        draw_rectangle({heart.col_index * tile_width + 20, (heart.row_index - first_tile_line_index) * tile_height + 20}, 20, 20, TDT4102::Color::red);
+        // draw_rectangle({heart.col_index * tile_width + 20, (heart.row_index - first_tile_line_index) * tile_height + 20}, 20, 20, TDT4102::Color::red);
+        draw_image({heart.col_index * tile_width + 5, (heart.row_index - first_tile_line_index) * tile_height -5}, this->heart_pic, 50, 80);
     }
 }
 
@@ -44,6 +46,12 @@ void GameWindow::draw_player(Player& player){
     else{
         draw_rectangle({(player.col_index + 1) * tile_width - player_eye_distance_from_front -8, (player.row_index - first_tile_line_index) * tile_height + player_eye_distance_from_top}, 8, 8, TDT4102::Color::black);
     }
+    // if(player.facing_left){
+    //     draw_image({player.col_index * tile_width, (player.row_index - first_tile_line_index) * tile_height}, this->player_left_pic, 64, 64);
+    // }
+    // else{
+    //     draw_image({player.col_index * tile_width, (player.row_index - first_tile_line_index) * tile_height}, this->player_right_pic, 64, 64);
+    // }
     draw_health(player);
     draw_money(player);
     draw_lvl(player);
@@ -52,7 +60,8 @@ void GameWindow::draw_player(Player& player){
 void GameWindow::draw_fire(GameWorld& world){
     for(int i = 0; i < world.fire_vec.size(); i++){
         if(world.tile_vec.at(world.fire_vec.at(i).row_index).at(world.fire_vec.at(i).col_index).tile_type == ' '){
-            draw_rectangle({world.fire_vec.at(i).col_index * tile_width + 20, (world.fire_vec.at(i).row_index - first_tile_line_index)*tile_height + 20}, 20, 20, TDT4102::Color::white);
+            // draw_rectangle({world.fire_vec.at(i).col_index * tile_width + 20, (world.fire_vec.at(i).row_index - first_tile_line_index)*tile_height + 20}, 20, 20, TDT4102::Color::white);
+            draw_image({world.fire_vec.at(i).col_index * tile_width -5, (world.fire_vec.at(i).row_index - first_tile_line_index)*tile_height - 32}, this->fire_pic, 80, 120);
         }
     }
 }

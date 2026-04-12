@@ -6,8 +6,8 @@
 
 class HiddenTreasure{
     GameWorld world;
-    int top_left_x = 100;
-    int top_left_y = 50;
+    int top_left_x = 0;
+    int top_left_y = 25;
     GameWindow window;
     PlayerRules player_rules;
     PlayerActions player_actions;

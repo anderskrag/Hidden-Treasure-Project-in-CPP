@@ -1,11 +1,13 @@
-10 17 2
-SSSSSSSSSSSSSSSSS
-SSSSSSSSPSSSSSSSS
-EW#############WE
-EW#############WE
-EW#############WE
-EW#############WE
-EW#############WE
-EW#############WE
-EW#############WE
-EW#############WE
+12 20 2
+SSSSSSSSSSSSSSSSSSSS
+SSSSSSSSSPSSSSSSSSSS
+EW################WE
+EW################WE
+EW################WE
+EW################WE
+EW################WE
+EW################WE
+EW################WE
+EW################WE
+EW################WE
+EW################WE
