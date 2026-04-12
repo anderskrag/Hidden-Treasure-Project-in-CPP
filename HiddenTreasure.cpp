@@ -2,7 +2,8 @@
 #include <fstream>
 #include <filesystem>
 #include "time.h" 
-#include <random>  
+#include <random> 
+#include <iostream>
 
 HiddenTreasure::HiddenTreasure(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, double fire_chance, unsigned int lvl)
 : world(filename, lack_of_air, heart_chance, gold_chance, fire_chance, lvl),
@@ -18,15 +19,20 @@ void HiddenTreasure::handle_input()
     if (window.is_key_down(KeyboardKey::LEFT) && !LEFT_already_down)
     {
         LEFT_already_down = true;
-
-        if (player_rules.canMoveLeft(this->world))
-        {
-            player_actions.moveLeft(this->world);
+        try{
+            if (player_rules.canMoveLeft(this->world))
+            {
+                player_actions.moveLeft(this->world);
+            }
+            else if (player_rules.canDigLeft(this->world))
+            {
+                player_actions.digLeft(this->world);
+            }
         }
-        else if (player_rules.canDigLeft(this->world))
-        {
-            player_actions.digLeft(this->world);
+        catch(std::out_of_range& e){
+            world.playerInWorld.col_index = world.width - 1;
         }
+        
         if (!world.playerInWorld.facing_left)
         {
             world.playerInWorld.facing_left = true;
@@ -40,15 +46,20 @@ void HiddenTreasure::handle_input()
     if (window.is_key_down(KeyboardKey::RIGHT) && !RIGHT_already_down)
     {
         RIGHT_already_down = true;
-        if (player_rules.canMoveRight(this->world))
-        {
-            player_actions.moveRight(this->world);
+        try{
+            if (player_rules.canMoveRight(this->world))
+            {
+                player_actions.moveRight(this->world);
+            }
+            else if (player_rules.canDigRight(this->world))
+            {
+                player_actions.digRight(this->world);
+            }
         }
-        else if (player_rules.canDigRight(this->world))
-        {
-            player_actions.digRight(this->world);
+        catch(std::out_of_range& e){
+            world.playerInWorld.col_index = 0;
         }
-        if (world.playerInWorld.facing_left)
+            if (world.playerInWorld.facing_left)
         {
             world.playerInWorld.facing_left = false;
         }
@@ -139,11 +150,15 @@ void HiddenTreasure::new_lvl(){
 }
 
 void HiddenTreasure::handle_menu(){
-    if(window.is_key_down(KeyboardKey::SPACE)){
+    if(!window.is_key_down(KeyboardKey::SPACE)){
+        SPACE_already_down = false;
+    }
+    if(window.is_key_down(KeyboardKey::SPACE) && !SPACE_already_down){
+        SPACE_already_down = true;
         game_live = true;
         world.clearWorld();
         window.first_tile_line_index = 0;
-        world = GameWorld("init_world.txt", world.lack_of_air, 0.05, world.fire_chance, world.gold_chance, 1);
+        world = GameWorld("init_world.txt", world.lack_of_air, 0.05, world.gold_chance, world.fire_chance, 1);
         start_time = time(0);
     }
 }
@@ -189,8 +204,25 @@ void HiddenTreasure::write_score_to_file(std::filesystem::path filename){
     score_written = true;
 }
 
+void HiddenTreasure::pause(){
+    if (!window.is_key_down(KeyboardKey::SPACE)){
+        SPACE_already_down = false;
+    }
+    if (window.is_key_down(KeyboardKey::SPACE) && !SPACE_already_down){
+        SPACE_already_down = true;
+
+        if(game_paused){
+            game_paused = false;
+            start_time = time(0);
+        }
+        else{
+            game_paused = true;
+        }
+    }
+}
+
 void HiddenTreasure::run()
-{
+{  
     start_time = time(0);
 
     while (!window.should_close())
@@ -199,16 +231,35 @@ void HiddenTreasure::run()
 
         if(game_live){
             score_written = false;
-
-            handle_time();
-            handle_input();
-            handle_gravity();
+            try{
+                if(!game_paused){
+                    handle_time();
+                    handle_input();
+                    handle_gravity();
+                    pause();
+                }
+                if(game_paused){
+                    window.draw_pause(this->world);
+                    pause();
+                }
+            }
+            catch(std::out_of_range& e){
+                std::cout << "out of range when handeling time, input, gravity. " << e.what() << std::endl;
+                break;
+            }
             if(world.playerInWorld.health <= 0){
                 game_live = false;
             }
         }
 
-        window.draw_world(this->world, this->world.playerInWorld);
+        try{
+            window.draw_world(this->world, this->world.playerInWorld);
+        }
+        catch(std::out_of_range& e){
+            std::cout << "out of range when drawing: " << e.what() << std::endl;
+            std::cout << "Might be world not correct initilized." << std::endl;
+            break;
+        }
         if(!game_live){
             write_score_to_file("highscore.txt");
             window.draw_game_over(this->world);

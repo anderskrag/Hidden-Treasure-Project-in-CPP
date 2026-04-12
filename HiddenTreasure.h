@@ -15,11 +15,12 @@ class HiddenTreasure{
     
     time_t start_time = 0;
     bool DOWN_already_down = false;
-    bool UP_already_down = false;
+    bool SPACE_already_down = false;
     bool LEFT_already_down = false;
     bool RIGHT_already_down = false;
     
     bool game_live = true;
+    bool game_paused = false;
     bool score_written = false;
 
     public:
@@ -29,7 +30,7 @@ class HiddenTreasure{
         void handle_input();
         void handle_gravity();
         void handle_menu();
-
+        void pause();
         void write_score_to_file(std::filesystem::path filename);
         void new_lvl();
         void add_new_line();

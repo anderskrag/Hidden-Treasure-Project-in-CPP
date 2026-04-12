@@ -97,3 +97,8 @@ void GameWindow::draw_game_over(GameWorld& world){
     draw_text({128, 64*(world.init_height-1)}, "(Press SPACE for new game...)", TDT4102::Color::lime_green);
     draw_highscore();
 }
+
+void GameWindow::draw_pause(GameWorld& world){
+    draw_text({128, 128}, "Game paused", TDT4102::Color::lime_green, 40);
+    draw_text({128, 64*(world.init_height-1)}, "(Press SPACE to resume...)", TDT4102::Color::lime_green);
+}

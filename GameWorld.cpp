@@ -1,55 +1,66 @@
 #include "GameWorld.h"
 #include <iostream>
 #include <random>
+#include <system_error>
 
 GameWorld::GameWorld(std::filesystem::path filename, int lack_of_air, double heart_chance, double gold_chance, double fire_chance, unsigned int lvl) : lack_of_air(lack_of_air), heart_chance(heart_chance), gold_chance(gold_chance), fire_chance(fire_chance) {
     std::ifstream is{filename};
 
-    if(!is){
-        std::cout << "Could not open file!" << std::endl;
-    }
+    try{
+        if(!is){
+            throw std::filesystem::filesystem_error("File not found", filename, std::make_error_code(std::errc::no_such_file_or_directory));
+        }
+        if(!(is >> init_height >> width >> sky_height)){
+            throw std::filesystem::filesystem_error("Wrong format", filename, std::make_error_code(std::errc::invalid_argument));
+        }
+        
+        height = init_height;
+        tile_vec.resize(init_height, std::vector<WorldTile>(width));
 
-    is >> init_height >> width >> sky_height;
-    height = init_height;
-    tile_vec.resize(init_height, std::vector<WorldTile>(width));
+        std::string line;
+        getline(is, line); //Removes ' ' from the stream.
+        int line_count = 0;
+        while(getline(is, line)){
+            for(int i = 0; i < width; i++){
+                tile_vec.at(line_count).at(i) = WorldTile(line.at(i));
+                if(tile_vec.at(line_count).at(i).tile_type == 'P'){
+                    playerInWorld = Player(line_count, i, false, 100, 0, lvl);
+                    playerInWorld.row_index = line_count;
+                    playerInWorld.col_index = i;
+                    playerInWorld.facing_left = false;
+                    tile_vec.at(line_count).at(i).tile_type = 'S'; // Har nå ingen spiller-tile. Spilleren er uavhengig av brettet på et vis
+                }
+            }
+            line_count++;
+        }
+        default_world_line = tile_vec.at(sky_height);
 
-    std::string line;
-    getline(is, line); //Removes ' ' from the stream.
-    int line_count = 0;
-    while(getline(is, line)){
-        for(int i = 0; i < width; i++){
-            tile_vec.at(line_count).at(i) = WorldTile(line.at(i));
-            if(tile_vec.at(line_count).at(i).tile_type == 'P'){
-                playerInWorld = Player(line_count, i, false, 100, 0, lvl);
-                playerInWorld.row_index = line_count;
-                playerInWorld.col_index = i;
-                playerInWorld.facing_left = false;
-                tile_vec.at(line_count).at(i).tile_type = 'S'; // Har nå ingen spiller-tile. Spilleren er uavhengig av brettet på et vis
+        for(int i = sky_height; i < init_height - 1; i++){
+            for(int j = 2; j < width - 5; j++){
+                std::random_device rd;
+                std::default_random_engine generator(rd());
+                std::uniform_real_distribution<double> distribution(0, 1);
+                double res = distribution(generator);
+
+                if(res < heart_chance){
+                    tile_vec.at(i).at(j).tile_type = ' ';
+                    hearts_vec.push_back(Heart(i, j));
+                }
+                else if(res < heart_chance + gold_chance){
+                    tile_vec.at(i).at(j).tile_type = ' ';
+                    gold_vec.push_back(Gold(i, j));
+                }
+                else if(res < heart_chance + gold_chance + fire_chance){
+                    fire_vec.push_back(Fire(i, j));
+                }
             }
         }
-        line_count++;
     }
-    default_world_line = tile_vec.at(sky_height);
-
-    for(int i = sky_height; i < init_height - 1; i++){
-        for(int j = 2; j < width - 5; j++){
-            std::random_device rd;
-            std::default_random_engine generator(rd());
-            std::uniform_real_distribution<double> distribution(0, 1);
-            double res = distribution(generator);
-
-            if(res < heart_chance){
-                tile_vec.at(i).at(j).tile_type = ' ';
-                hearts_vec.push_back(Heart(i, j));
-            }
-            else if(res < heart_chance + gold_chance){
-                tile_vec.at(i).at(j).tile_type = ' ';
-                gold_vec.push_back(Gold(i, j));
-            }
-            else if(res < heart_chance + gold_chance + fire_chance){
-                fire_vec.push_back(Fire(i, j));
-            }
-        }
+    catch(std::filesystem::filesystem_error& e){
+        std::cout << e.what() << std::endl;
+    }
+    catch(std::out_of_range& e){
+        std::cout << "out of range when creating world" << std::endl;
     }
 }
 
